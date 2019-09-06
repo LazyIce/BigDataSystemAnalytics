@@ -20,9 +20,12 @@ EPOCHS = 30
 
 # Two volume: 1000, 10000
 # Two resolution: 28*28, 64*64
-volume = 1000 
+volume = 1000
+# volume = 10000
 img_rows = 28 
 img_cols = 28 
+# img_rows = 64
+# img_cols = 64
 
 (X_train, Y_train), (X_test, Y_test) = mnist.load_data()
 
@@ -37,7 +40,12 @@ Y_test = Y_test[test_rand_idxs]
 X_train = np.asarray([cv2.resize(image, (img_rows, img_cols)) for image in X_train])
 X_test = np.asarray([cv2.resize(image, (img_rows, img_cols)) for image in X_test])
 
-plt.imshow(X_train[0], cmap='gray', vmin=0, vmax=255)
+fig, (ax1, ax2, ax3, ax4, ax5) = plt.subplots(1, 5)
+ax1.imshow(X_train[0], cmap='gray', vmin=0, vmax=255)
+ax2.imshow(X_train[1], cmap='gray', vmin=0, vmax=255)
+ax3.imshow(X_train[2], cmap='gray', vmin=0, vmax=255)
+ax4.imshow(X_train[3], cmap='gray', vmin=0, vmax=255)
+ax5.imshow(X_train[4], cmap='gray', vmin=0, vmax=255)
 
 X_train = X_train.astype('float32') / 255.0
 X_test = X_test.astype('float32') / 255.0
