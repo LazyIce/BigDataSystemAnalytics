@@ -1,5 +1,5 @@
 import keras
-from keras.datasets import mnist
+from keras.datasets import mnist, fashion_mnist
 from keras.models import Sequential
 from keras.layers import Dense, Dropout, Flatten
 from keras.layers import Conv2D, MaxPooling2D
@@ -47,16 +47,32 @@ ax3.imshow(X_train[2], cmap='gray', vmin=0, vmax=255)
 ax4.imshow(X_train[3], cmap='gray', vmin=0, vmax=255)
 ax5.imshow(X_train[4], cmap='gray', vmin=0, vmax=255)
 
+(X_train_outlier, Y_train_outlier), (X_test_outlier, Y_test_outlier) = fashion_mnist.load_data()
+idx = [i for (i, y) in enumerate(Y_test_outlier) if y == 1][:10]
+X_test_outlier = X_test_outlier[idx]
+Y_test_outlier = Y_test_outlier[idx] 
+X_test_outlier = np.asarray([cv2.resize(image, (img_rows, img_cols)) for image in X_test_outlier])
+
+fig, (ax1, ax2, ax3, ax4, ax5) = plt.subplots(1, 5)
+ax1.imshow(X_test_outlier[0], cmap='gray', vmin=0, vmax=255)
+ax2.imshow(X_test_outlier[1], cmap='gray', vmin=0, vmax=255)
+ax3.imshow(X_test_outlier[2], cmap='gray', vmin=0, vmax=255)
+ax4.imshow(X_test_outlier[3], cmap='gray', vmin=0, vmax=255)
+ax5.imshow(X_test_outlier[4], cmap='gray', vmin=0, vmax=255)
+
 X_train = X_train.astype('float32') / 255.0
 X_test = X_test.astype('float32') / 255.0
+X_test_outlier = X_test_outlier.astype('float32') / 255.0
 
 if K.image_data_format() == 'channels_first':
     X_train = X_train.reshape(X_train.shape[0], 1, img_rows, img_cols)
     X_test = X_test.reshape(X_test.shape[0], 1, img_rows, img_cols)
+    X_test_outlier = X_test_outlier.reshape(X_test_outlier.shape[0], 1, img_rows, img_cols)
     input_shape = (1, img_rows, img_cols)
 else:
     X_train = X_train.reshape(X_train.shape[0], img_rows, img_cols, 1)
     X_test = X_test.reshape(X_test.shape[0], img_rows, img_cols, 1)
+    X_test_outlier = X_test_outlier.reshape(X_test_outlier.shape[0], img_rows, img_cols, 1)
     input_shape = (img_rows, img_cols, 1)
 
 Y_train = keras.utils.to_categorical(Y_train, NUM_CLASSES)
@@ -88,6 +104,10 @@ test_end = time.time()
 print('Test time:', '%s seconds' % (test_end - test_start))
 print('Test loss:', test_loss)
 print('Test accuracy:', test_acc)
+
+outlier_results = model.predict(X_test_outlier)
+outlier_results = [np.argmax(x) for x in outlier_results]
+print(outlier_results)
 
 model.save('./models/mnist_model_' + str(volume) + '_' + str(img_rows*img_cols))
 

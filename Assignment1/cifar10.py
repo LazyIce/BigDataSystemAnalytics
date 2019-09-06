@@ -1,5 +1,5 @@
 import keras
-from keras.datasets import cifar10
+from keras.datasets import cifar10, cifar100
 from keras.models import Sequential
 from keras.layers import Dense, Dropout, Activation, Flatten
 from keras.layers import Conv2D, MaxPooling2D
@@ -46,8 +46,21 @@ ax3.imshow(X_train[2])
 ax4.imshow(X_train[3])
 ax5.imshow(X_train[4])
 
+(X_train_outlier, Y_train_outlier), (X_test_outlier, Y_test_outlier) = cifar100.load_data()
+idx = [i for (i, y) in enumerate(Y_test_outlier) if y == 88][:10]
+X_test_outlier = X_test_outlier[idx]
+Y_test_outlier = Y_test_outlier[idx] 
+X_test_outlier = np.asarray([cv2.resize(image, (img_rows, img_cols)) for image in X_test_outlier])
+fig, (ax1, ax2, ax3, ax4, ax5) = plt.subplots(1, 5)
+ax1.imshow(X_test_outlier[0])
+ax2.imshow(X_test_outlier[1])
+ax3.imshow(X_test_outlier[2])
+ax4.imshow(X_test_outlier[3])
+ax5.imshow(X_test_outlier[4])
+
 X_train = X_train.astype('float32') / 255.0
 X_test = X_test.astype('float32') / 255.0
+X_test_outlier = X_test_outlier.astype('float32') / 255.0
 
 Y_train = keras.utils.to_categorical(Y_train, NUM_CLASSES)
 Y_test = keras.utils.to_categorical(Y_test, NUM_CLASSES)
@@ -91,6 +104,10 @@ test_end = time.time()
 print('Test time:', '%s seconds' % (test_end - test_start))
 print('Test loss:', test_loss)
 print('Test accuracy:', test_acc)
+
+outlier_results = model.predict(X_test_outlier)
+outlier_results = [np.argmax(x) for x in outlier_results]
+print(outlier_results)
 
 model.save('./models/cifar10_model_' + str(volume) + '_' + str(img_rows*img_cols))
 
