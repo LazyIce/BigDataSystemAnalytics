@@ -100,9 +100,10 @@ Min-batch size is 32, #epoch is 100.
 
 #### (e) Default error threshold
 
-- For MNIST CNN model, the error threshold is 
+- For MNIST CNN model, my error threshold is loss = 0.05, i.e, loss < 0.05 means convergence.
 
-- For CIFAR10 CNN model, the error threshold is
+- For CIFAR10 CNN model, my error threshold is loss = 0.5, i.e, loss < 0.5 means convergence.
+
 
 ### (4) Output Analysis
 
@@ -121,7 +122,7 @@ Min-batch size is 32, #epoch is 100.
 
 - Outlier test results for MNIST
 
-I used the images from Fashion-MNIST and the ground truth of my outlier images is "pant".
+I used the images from Fashion-MNIST and the ground truth of my outlier images is "pant". The test results are as follows:
 
 |  Model | test1 | test2 | test3 | test4 | test5 | test6 | test7 | test8 | test9 | test10 |
 | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: |
@@ -133,14 +134,18 @@ I used the images from Fashion-MNIST and the ground truth of my outlier images i
 
 I used the images from CIFAR100 and the ground truth of my outlier images is "tiger"
 
-The ground truth is "tiger"
+The ground truth is "tiger". The test results are as follows:
 
 |  Model | test1 | test2 | test3 | test4 | test5 | test6 | test7 | test8 | test9 | test10 |
 | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: |
-| CIFAR10-1000-32\*32 | 2 | 4 | 4 | 5 | 2 | 2 | 6 | 7 | 3 | 6 |
-| CIFAR10-1000-64\*64 | 4 | 2 | 3 | 5 | 2 | 2 | 7 | 7 | 6 | 6 |
-| CIFAR10-10000-32\*32 | 3 | 4 | 3 | 3 | 3 | 5 | 6 | 5 | 6 | 6 |
+| CIFAR10-1000-32\*32 | bird | deer | deer | dog | bird | bird | frog | horse | cat | frog |
+| CIFAR10-1000-64\*64 | deer | bird | cat | dog | bird | bird | horse | horse | frog | frog |
+| CIFAR10-10000-32\*32 | cat | deer | cat | cat | cat | dog | frog | dog | frog | frog |
 
 #### (d) My observations
-1. hjhh
-2. hhhh
+
+1. From model comparision, we can find that the trained model size is determined by the resolution of the images. The larger resolution images dataset has the larger model size. The dataset size has no influence on the trained model size.
+2. With the same resolution images, it can be concluded that the larger training dataset can lead to a more accurate model, which can get higher accuracy for the classification of testing dataset. 
+3. With the same dataset size, it can be observed that the CNN model get lower test accuracy for larger resolution images than the smaller resolution images. So, the larger resolution images are harder to be classified than the smaller resolution images with the same amount of training dataset.
+4. With the same dataset size and resolution, color images are harder to be classfied than the grayscale images.
+5. From the outlier test of CIFAR10, we can guess that larger training dataset can lead to a more reliable model. It's because that the tiger looks like the cat and dog and CIFAR-10000\*32\*32 model has more cat and dog results. So, it can handle the outlier test better.
