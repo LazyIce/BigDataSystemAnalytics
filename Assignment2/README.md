@@ -21,6 +21,7 @@ Here is a document sample:
 
 ### Environment
 - Mac OSX
+- Docker
 - Hadoop 2.7.3
 - Spark 2.1.0
 
@@ -38,38 +39,46 @@ For each problem, the development process for Hadoop MapReduce is as follows:
 
 ```
 mkdir classes
-javac -cp $(hadoop classpath) -d classes WordCount.java
+javac -cp $(hadoop classpath) -d classes <filename>.java
 ```
 
 3\. **Create JAR**: create the Jar using classes just compiled
 
 ```
-jar -cvf WordCount.jar -C classes/ .
+jar -cvf <filename>.jar -C classes/ .
 ```
 
 4\. **Run**: create the "input" directory in HDFS, upload all the text files into "input" directory and run the Jar to process the data
 
 ```
 hadoop jar WordCount.jar WordCount input output
+
+hadoop jar TopKWordCount.jar TopKWordCount input output 100
 ```
 
 5\. **Download output**: merge the output files in HDFS and download it to local machine
 
 ```
-hdfs dfs -getmerge output word_count_output.txt
+hdfs dfs -getmerge output <filename>.txt
 ```
 
 ### Execution Process
 
+Execution screenshot for Word Count
+
 ![execution1](screenshots/execution1.png)
+
+Execution screenshot for Top 100 Word Count
+
+![execution2](screenshots/execution2.png)
 
 ### Output
 
 Here are two samples of output for Word Count and Top 100 Words.
 
-![output1](output1.png)
+![output1](screenshots/output1.png)
 
-![output2](output2.png)
+![output2](screenshots/output2.png)
 
 ### Runtime measurements analysis
 
