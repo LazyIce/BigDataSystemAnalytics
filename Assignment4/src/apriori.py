@@ -5,7 +5,6 @@ class Apriori():
         self.dataset = dataset
         self.support_data = {}
         self.freq_itemsets = []
-        self.t_num = float(len(self.dataset))
 
 
     def __create_C1(self):
@@ -91,9 +90,9 @@ class Apriori():
                         item_count[item] += 1
 
         for item in item_count:
-            if (item_count[item] / self.t_num) >= min_sup:
+            if item_count[item]  >= min_sup:
                 Lk.add(item)
-                self.support_data[item] = item_count[item] / self.t_num
+                self.support_data[item] = item_count[item]
 
         return Lk
 
@@ -125,6 +124,7 @@ class Apriori():
         i = 2
 
         while True:
+            print(i)
             start = datetime.now()
             Ci = self.__create_Ck(Lksub1, i)
             deltatime = datetime.now() - start

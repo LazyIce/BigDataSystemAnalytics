@@ -18,8 +18,7 @@ class FPTreeNode():
 
 
 class FPGrowth():
-
-    def __init__(self, dataset, min_sup=0.0):
+    def __init__(self, dataset, min_sup):
         self.dataset = dataset
         self.min_sup = min_sup
         self.freq_L1 = {}  # 1-itemset
@@ -55,9 +54,8 @@ class FPGrowth():
     def __fpgrowth(self, cpb, post_model):
         freq_dict = self.__get_frequency(cpb)
         headers = {}
-        data_num = len(self.dataset)
         for key in freq_dict:
-            if freq_dict.get(key) / data_num >= self.min_sup:
+            if freq_dict.get(key) >= self.min_sup:
                 node = FPTreeNode(key)
                 node.count = freq_dict[key]
                 headers[key] = node
@@ -68,7 +66,7 @@ class FPGrowth():
             rule = []
             rule.append(header.name)
             rule.extend(post_model)
-            temp = (rule, header.count / data_num)
+            temp = (rule, header.count)
             self.freq_itemsets.append(temp)
             new_post_pattern = []
             new_post_pattern.append(header.name)
